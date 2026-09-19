@@ -1,0 +1,11 @@
+.venv/
+data/
+figures/
+ebu_tests/
+.env
+.cache
+__pycache__/
+*/__pycache__/
+analysis/
+candidates/
+results/
