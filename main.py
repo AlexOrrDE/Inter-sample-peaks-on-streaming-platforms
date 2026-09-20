@@ -1,10 +1,11 @@
 import argparse
+import sounddevice as sd
+
 from contextlib import closing
 from pathlib import Path
-
 from dotenv import load_dotenv
 
-from capture.recorder import find_capture_device, list_input_devices
+from capture.recorder import find_capture_device
 from corpus.database import connect, count
 from pipeline import spotify_quality, tidal_quality, genre_labels, run_spotify, run_tidal
 
@@ -21,7 +22,7 @@ def main():
     sp_p.add_argument("--normalisation", choices=["on", "off"], required=True)
     sp_p.add_argument("--n-tracks", type=int, required=True)
     sp_p.add_argument("--db", default="data/corpus.db")
-    
+
     td_p = sub.add_parser("tidal")
     td_p.add_argument("--quality", choices=tidal_quality, required=True)
     td_p.add_argument("--normalisation", choices=["on", "off"], required=True)
@@ -31,11 +32,7 @@ def main():
     args = parser.parse_args()
 
     device = find_capture_device()
-    device_name = None
-    for d in list_input_devices():
-        if d["index"] == device:
-            device_name = d["name"]
-            break
+    device_name = sd.query_devices(device)["name"]
     print(f"Audio device: {device_name} (index {device})")
 
     with closing(connect(Path(args.db))) as conn:
