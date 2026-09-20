@@ -35,11 +35,11 @@ def print_result(row_id, record):
     isp_label = "YES" if record["has_isp"] else "no"
     print(
         f"[{row_id}] - {record['artist']} - {record['title']}\n"
-        f"TP {record['true_peak_dbtp']:+.2f} dBTP"
-        f"SP {record['sample_peak_dbfs']:+.2f} dBFS"
-        f"margin {record['isp_margin_db']:+.2f} dB"
-        f"LUFS {record['integrated_lufs']:.1f}"
-        f"ISP: {isp_label} ({record['n_isp_events']} events, {record['isp_over_pct']:.3f}%)"
+        f"TP {record['true_peak_dbtp']:+.2f} dBTP, "
+        f"SP {record['sample_peak_dbfs']:+.2f} dBFS, "
+        f"margin {record['isp_margin_db']:+.2f} dB, "
+        f"LUFS {record['integrated_lufs']:.1f}, "
+        f"ISP: {isp_label}"
     )
 
 
@@ -50,9 +50,9 @@ def print_session_summary(conn):
         return
 
     print(f"\nSession summary: ({len(df)} tracks total)")
-    print(f"ISP rate: {df['has_isp'].mean():.1%}")
-    print(f"True peak mean: {df['true_peak_dbtp'].mean():.2f} dBTP")
-    print(f"True peak max: {df['true_peak_dbtp'].max():.2f} dBTP")
+    print(f"ISP rate: {df['has_isp'].mean():.1%}, ")
+    print(f"True peak mean: {df['true_peak_dbtp'].mean():.2f} dBTP, ")
+    print(f"True peak max: {df['true_peak_dbtp'].max():.2f} dBTP, ")
     print(f"LUFS mean: {df['integrated_lufs'].mean():.1f}")
 
     silent = df[df["integrated_lufs"] < -50]
